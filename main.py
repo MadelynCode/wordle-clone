@@ -1,5 +1,6 @@
 import random
 import time
+from rich import print
 
 words = []
 
@@ -23,19 +24,31 @@ def pick_word(words):
 def check_word(word, answer, words):
     if valid_word(word, words) == False:
         print("Invalid guess")
-        return
-    if word == answer:
+        return False
+    if word.lower() == answer.lower():
          return "correct"
     else:
          return "incorrect"
 
 def colors(word, answer):
-     splitted = list(word)
-     splitted_answer = list(answer)
+     splitted = list(word.upper())
+     splitted_answer = list(answer.upper())
      result_colors = []
+     result = []
      for i in range(0, 5):
-        pass
+        if splitted_answer[i] == splitted[i]:
+            result_colors.append("[bold green]")
+        elif splitted[i] in splitted_answer:
+            result_colors.append("[bold yellow]")
+        else:
+            result_colors.append("[bold gray]")
      
+  
+     for i in range(0, 5):
+        result.append(result_colors[i])
+        result.append(splitted[i])
+
+     return "".join(result)
 
 
 
@@ -44,7 +57,7 @@ def main():
     words = get_list("./word_list.txt")
     answer = pick_word(words)
     chances = 6
-    message = ["Phew, barely!", "Good", "Nice!", "Amazing", "Wow...!"]
+    message = ["Phew", "Good", "Nice!", "Amazing", "Wow...!"]
 
     print("======STARTING WORDLE ======")
     time.sleep(0.3)
@@ -53,14 +66,20 @@ def main():
     # loop
     while True:
          guess = input().lower()
-         chances -= 1
          result = check_word(guess, answer, words)
+         if result == False:
+             continue
+         print(colors(guess, answer))
          if result == "correct":
             print(message[chances])
             print("======CORRECT======")
             break
          elif result == "incorrect":
-              print("do stuffs")
+              chances -= 1
+              print(f"You have {chances} chances remaning")
+              if chances < 1:
+                  print("======YOU LOSE======")
+                  print(f"The answer was {answer}")
     
 
     

@@ -41,7 +41,7 @@ def colors(word, answer):
         elif splitted[i] in splitted_answer:
             result_colors.append("[bold yellow]")
         else:
-            result_colors.append("[bold gray]")
+            result_colors.append("[bold red]")
      
   
      for i in range(0, 5):
@@ -72,15 +72,15 @@ def main():
          print(colors(guess, answer))
          if result == "correct":
             print(message[chances])
-            print("======CORRECT======")
+            print("[green]======CORRECT======")
             break
          elif result == "incorrect":
               chances -= 1
               print(f"You have {chances} chances remaning")
               if chances < 1:
-                  print("======YOU LOSE======")
+                  print("[red]======YOU LOSE======")
                   print(f"The answer was {answer}")
-    
+                  break
 
     
 
